@@ -147,14 +147,15 @@ h1,.dialog-title,.page-heading h2,.song-card h3{letter-spacing:normal;font-kerni
 .workspace.workspace-wide{grid-template-columns:minmax(0,1fr);gap:0}.workspace-wide .page{scroll-margin-top:24px}.collection-filters{display:flex;gap:10px;flex-wrap:nowrap;overflow-x:auto;width:100%;margin:0 0 22px;padding:3px 2px 10px;scrollbar-width:thin;scrollbar-color:#dca2b8 transparent;-webkit-overflow-scrolling:touch}.collection-filters a{flex:0 0 auto;padding:10px 22px;border:1px solid var(--line);border-radius:24px;font-size:14px;line-height:1.4;background:var(--white);color:var(--ink);text-decoration:none}.collection-filters a[aria-current=page]{background:var(--pink);border-color:var(--pink);color:white}.collection-filters a[aria-current=page]:after{display:none}.collection-filters a:hover{border-color:var(--pink)}.collection-filters a:focus-visible{outline:2px solid var(--pink);outline-offset:2px}@media(max-width:640px){.collection-filters{gap:8px}.collection-filters a{padding:9px 17px}}
 
 /* Adapted from Uiverse.io by Itskrish01: folded-corner collection controls. */
-.collection-filters .fold-filter{position:relative;display:flex;align-items:center;overflow:hidden;padding:12px 24px;min-height:46px;min-width:105px;border:0;border-radius:6px;background:#b83f70;color:#fff;font-weight:500;transition:background-color .2s,box-shadow .2s;isolation:isolate}
+.collection-filters .fold-filter{position:relative;display:flex;align-items:center;overflow:hidden;padding:12px 24px;min-height:46px;min-width:105px;border:0;border-radius:6px;background:#b83f70;color:#fff;font-weight:500;transition:background-color .2s,box-shadow .2s,transform .2s;isolation:isolate}
 .fold-filter .fold-corner{position:absolute;display:inline-block;width:16px;height:16px;background:#8f2852;border-radius:4px;transition:margin .5s ease-in-out;z-index:2;pointer-events:none}
 .fold-filter .fold-corner-top{top:0;right:0}.fold-filter .fold-corner-bottom{bottom:0;left:0;transform:rotate(180deg)}
 .fold-filter .fold-corner>span{position:absolute;top:0;right:0;width:20px;height:20px;background:var(--paper);transform:translate(50%,-50%) rotate(45deg)}
 .fold-filter .fold-fill{position:absolute;inset:0;transform:translateX(-100%);background:#a82b56;border-radius:6px;transition:transform .5s ease-in-out .2s;pointer-events:none}
 .fold-filter .fold-text{position:relative;width:100%;text-align:left;color:white;transition:color .2s ease-in-out}
-.collection-filters .fold-filter:is(:hover,:focus-visible) .fold-corner-top{margin-right:-16px;margin-top:-16px}
-.collection-filters .fold-filter:is(:hover,:focus-visible) .fold-corner-bottom{margin-left:-16px;margin-bottom:-16px}
+.collection-filters .fold-filter:is(:hover,:focus-visible){transform:translateY(-1px);box-shadow:0 5px 12px #7a254726}
+.collection-filters .fold-filter:is(:hover,:focus-visible) .fold-corner-top{margin:0}
+.collection-filters .fold-filter:is(:hover,:focus-visible) .fold-corner-bottom{margin:0}
 .collection-filters .fold-filter:is(:hover,:focus-visible) .fold-fill{transform:translateX(0)}
 .collection-filters .fold-filter[aria-current=page]{background:#8f2852;box-shadow:0 3px 0 #f3bfd2}
 .collection-filters .fold-filter[aria-current=page] .fold-fill{background:#8f2852;transform:translateX(0)}
