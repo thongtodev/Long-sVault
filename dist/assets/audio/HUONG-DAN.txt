@@ -1,0 +1,14 @@
+NHẠC NỀN LONG'S VAULT
+
+1. Đặt nhạc của bạn trong thư mục này, đặt tên background.mp3.
+   Website sẽ tự thử phát tệp assets/audio/background.mp3 khi chưa có cấu hình Firebase.
+   Gói này chưa kèm tệp âm thanh.
+2. Nếu đã có cấu hình nhạc trên Firebase: trong admin, bật Nhạc nền tự phát,
+   thêm assets/audio/background.mp3, chọn làm mặc định rồi Lưu cấu hình.
+   Các tệp khác dùng tên không dấu, không khoảng trắng, ví dụ dem-yen.mp3.
+   Chỉ chép thêm tệp vào thư mục không tự thêm chúng vào danh sách admin.
+3. Khi chạy bằng py, thư mục này ở web/assets/audio/. Khi đưa lên hosting,
+   tải cả thư mục assets/audio cùng website. Đường dẫn C:\... không dùng trên web.
+4. Trình duyệt có thể chặn nhạc có tiếng khi vừa mở trang. Website tự thử phát,
+   và thử lại sau tương tác đầu tiên nếu bị chặn. Nút nhạc dùng để tắt/bật lại.
+   Đã tạm dừng thì website không tự bật lại khi bạn chuyển trang.

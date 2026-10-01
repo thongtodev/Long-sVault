@@ -1,0 +1,93 @@
+rules_version = '2';
+service cloud.firestore {
+ match /databases/{database}/documents {
+  function isAdmin() {
+   return request.auth != null
+    && exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+    && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.active == true;
+  }
+  function text(d,key,max) { return d.get(key,'') is string && d.get(key,'').size() <= max; }
+  function url(d,key) {
+   return text(d,key,2048) && (d.get(key,'') == '' || d.get(key,'').matches('https://[^ ]+'));
+  }
+  function validSong(d) {
+   return d.keys().hasAll(['title','artist','category','year','createdAt'])
+    && d.title is string && d.title.size() > 0 && d.title.size() <= 300
+    && text(d,'artist',500)
+    && d.category is string && d.category.size() > 0 && d.category.size() <= 80
+    && (d.year == null || (d.year is int && d.year >= 1800 && d.year <= 2100))
+    && text(d,'date',100) && text(d,'description',20000)
+    && text(d,'lyric',50000) && text(d,'detail',2000) && text(d,'meta',500)
+    && url(d,'youtube') && url(d,'spotify') && url(d,'appleMusic')
+    && url(d,'itunes') && url(d,'soundcloud')
+    && d.createdAt is timestamp
+    && d.get('vinylColor','pink') in ['pink','rose','burgundy']
+    && d.get('featured',false) is bool
+    && d.updatedAt == request.time && d.updatedBy == request.auth.uid;
+  }
+  match /admins/{uid} {
+   allow get: if request.auth != null && request.auth.uid == uid;
+   allow list, create, update, delete: if false;
+  }
+  // All documents in songs are the public catalog. There is no published flag.
+  match /songs/{songId} {
+   allow read: if true;
+   allow create: if isAdmin() && validSong(request.resource.data)
+    && request.resource.data.keys().hasOnly(['title','artist','category','year','date',
+      'description','lyric','detail','meta','youtube','spotify','appleMusic','itunes','soundcloud',
+      'createdAt','updatedAt','updatedBy','vinylColor','featured'])
+    && request.resource.data.createdAt <= request.time;
+   allow update: if isAdmin() && validSong(request.resource.data)
+    && request.resource.data.createdAt == resource.data.createdAt
+    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['title','artist',
+      'category','year','date','description','lyric','detail','meta','youtube','spotify','appleMusic',
+      'itunes','soundcloud','updatedAt','updatedBy','vinylColor','featured']);
+   allow delete: if isAdmin();
+  }
+  match /songDrafts/{songId} {
+   allow read, delete: if isAdmin();
+   allow create: if isAdmin() && validSong(request.resource.data)
+     && request.resource.data.createdAt <= request.time;
+   allow update: if isAdmin() && validSong(request.resource.data)
+     && request.resource.data.createdAt == resource.data.createdAt;
+  }
+  function validTrack(t) {
+   return t is map && t.keys().hasOnly(['id','title','url'])
+    && t.id is string && t.id.size() > 0 && t.id.size() <= 80
+    && t.title is string && t.title.size() > 0 && t.title.size() <= 180
+    && t.url is string && t.url.size() <= 2048
+    && (t.url.matches('https://[^ ]+')
+      || t.url.matches('assets/audio/([A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+[.](mp3|m4a|ogg|wav|aac|flac)'));
+  }
+  function trackAt(d,i) { return d.tracks.size() <= i || validTrack(d.tracks[i]); }
+  function selectedAt(d,i) { return d.tracks.size() > i && d.tracks[i].id == d.defaultTrack; }
+  function validSettings(d) {
+   return d.keys().hasOnly(['bannerText','bannerEnabled','audioEnabled','volume','loop',
+    'pauseOnExternal','defaultTrack','tracks','updatedAt','updatedBy'])
+    && text(d,'bannerText',500) && d.bannerEnabled is bool && d.audioEnabled is bool
+    && (!d.bannerEnabled || d.bannerText.size() > 0)
+    && d.volume is int && d.volume >= 0 && d.volume <= 100
+    && d.loop is bool && d.pauseOnExternal is bool
+    && d.defaultTrack is string && d.defaultTrack.size() <= 80
+    && d.tracks is list && d.tracks.size() <= 8
+    && trackAt(d,0) && trackAt(d,1) && trackAt(d,2) && trackAt(d,3)
+    && trackAt(d,4) && trackAt(d,5) && trackAt(d,6) && trackAt(d,7)
+    && (d.defaultTrack == '' || selectedAt(d,0) || selectedAt(d,1)
+      || selectedAt(d,2) || selectedAt(d,3) || selectedAt(d,4)
+      || selectedAt(d,5) || selectedAt(d,6) || selectedAt(d,7))
+    && (!d.audioEnabled || (d.tracks.size() > 0 && d.defaultTrack != ''))
+    && d.updatedAt == request.time && d.updatedBy == request.auth.uid;
+  }
+  match /settings/profile {
+   allow read: if true;
+   allow create, update: if isAdmin();
+   allow delete: if false;
+  }
+  match /settings/site {
+   allow read: if true;
+   allow create, update: if isAdmin() && validSettings(request.resource.data);
+   allow delete: if false;
+  }
+
+ }
+}
