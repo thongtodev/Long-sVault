@@ -40,6 +40,15 @@
 .platform-btn,.platforms a.platform-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:9px;border:1px solid var(--line);border-radius:50%;background:var(--paper);transition:transform .18s,background .18s;flex-shrink:0}
 .platform-btn img{display:block;width:20px;height:20px}
 .platform-btn:hover{transform:translateY(-3px);background:var(--wash)}
+/* Brand colors only during interaction; idle button styles stay unchanged. */
+.platform-btn:has(img[src$="/youtube.svg"]){--platform-brand:#ff0000}
+.platform-btn:has(img[src$="/spotify.svg"]){--platform-brand:#1db954}
+.platform-btn:has(img[src$="/applemusic.svg"]){--platform-brand:#fa243c}
+.platform-btn:has(img[src$="/itunes.svg"]){--platform-brand:#b845d5}
+.platform-btn:has(img[src$="/soundcloud.svg"]){--platform-brand:#ff5500}
+.platform-btn.platform-btn:is(:hover,:focus-visible){background:var(--platform-brand,var(--wash));border-color:var(--platform-brand,var(--line));box-shadow:0 4px 12px #00000018}
+.platform-btn:is(:hover,:focus-visible) img{filter:brightness(0) invert(1)}
+.platform-btn:focus-visible{outline:2px solid var(--platform-brand,var(--pink));outline-offset:3px}
 .song-lyric{white-space:pre-wrap;line-height:1.9;font-size:16px}
 .song-lyric.is-collapsed{max-height:22.8em;overflow:hidden;mask-image:linear-gradient(#000 85%,transparent)}
 .lyric-section{margin:28px 0}.lyric-toggle{margin-top:12px;padding:9px 14px;color:var(--pink);border:1px solid var(--line);border-radius:8px;background:var(--wash)}
