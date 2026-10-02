@@ -38,7 +38,7 @@
   }
 
   function syncTitle() {
-    document.title = titles[currentRoute()] || 'Long’s Vault';
+    document.title = location.pathname === '/' ? 'Long’s Vault' : (titles[currentRoute()] || 'Long’s Vault');
   }
 
   const pushState = history.pushState;

@@ -196,3 +196,7 @@ body{font-weight:300;font-synthesis:none}button,input,select,textarea{font-famil
 /* An asymmetric reflection makes the rotation visible without adding dots. */
 .orgel-disc::before{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;background:conic-gradient(from 25deg,transparent 0deg 35deg,#ffffff55 55deg,transparent 83deg 210deg,#ffffff24 235deg,transparent 260deg 360deg);mask-image:radial-gradient(circle,transparent 0 18%,#000 20%);-webkit-mask-image:radial-gradient(circle,transparent 0 18%,#000 20%)}
 @media(prefers-reduced-motion:no-preference){.song-card .orgel-disc{animation:spin-vinyl 8s linear infinite;animation-play-state:paused}.song-card:hover .orgel-disc,.song-card:focus-within .orgel-disc{animation-play-state:running}.detail-art:hover .orgel-disc{animation:spin-vinyl 8s linear infinite}}
+/* Keep the single explicit clear button and fit the search mode on small screens. */
+#clear-search[hidden]{display:none!important}
+.toolbar #search-field{flex-shrink:0;max-width:170px}
+@media(max-width:900px){.toolbar{flex-wrap:wrap}.toolbar .search{min-width:180px}.toolbar #search-field{max-width:none}}
