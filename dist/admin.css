@@ -10,3 +10,6 @@
 .modal-editor{position:fixed;inset:0;transform:none;margin:auto;width:min(1100px,94vw);max-width:1100px;max-height:90dvh;overflow:auto;z-index:100;background:var(--paper);border:1px solid var(--line);box-shadow:0 20px 60px #0003;border-radius:24px;padding:24px}
 .modal-editor:not([open]){display:none}
 .modal-editor::backdrop{background:#35132366;backdrop-filter:blur(4px)}
+.lyric-badge{display:table;margin-top:7px;padding:4px 9px;border-radius:20px;font-size:12px;line-height:1.4;font-weight:400;white-space:nowrap}
+.lyric-badge.has-lyric{background:#edf7f0;color:#246440;border:1px solid #c3dfcc}
+.lyric-badge.missing-lyric{background:#fff0f5;color:#963d5d;border:1px solid #ebc4d2}
